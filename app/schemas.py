@@ -20,10 +20,6 @@ class CreateGameRoom(GameRoomBase):
 class UpdateGameRoom(BaseModel):
     players: str
 
-class players(BaseModel):
-    players: dict[str, int]
-
-
 class Gametable(GameRoomBase):
     id: int
     room_name: str
@@ -35,10 +31,19 @@ class Gametable(GameRoomBase):
     class Config:
         from_attributes = True
 
+class CreatedGametable(GameRoomBase):
+    id: int
+    room_name: str
+    player1: int
+
+    class Config:
+        from_attributes = True
+
 class UserCreate(BaseModel):
     email : EmailStr
     username : str
     password : str
+    is_active : Optional[bool] = False
 
 
 class UserResponse(BaseModel):

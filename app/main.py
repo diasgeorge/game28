@@ -1,7 +1,7 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app import game
+from app.routes import game
 from app.routes import auth, table, user
 from . import models
 from .database import engine

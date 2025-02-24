@@ -46,7 +46,7 @@ def get_gametables(db: Session = Depends(get_db),current_user : int = Depends(oa
     print(results)
     return results
 
-@router.post("/", status_code=status.HTTP_201_CREATED,response_model=schemas.Gametable)
+@router.post("/", status_code=status.HTTP_201_CREATED,response_model=schemas.CreatedGametable)
 def create_gametable(gametables: schemas.CreateGameRoom, db: Session = Depends(get_db),current_user : int = Depends(oauth2.get_current_user)):
     if current_user is None:
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail=f"You Dont Have permissions to do this")
@@ -77,7 +77,7 @@ def delete_gametables(id: int, db: Session = Depends(get_db),current_user : int 
 @router.put("/{id}",response_model=schemas.Gametable)
 def update_gametables(id: int, gamePlayers: schemas.UpdateGameRoom, db: Session = Depends(get_db),current_user : int = Depends(oauth2.get_current_user) ):
     query = gen_main_query(db)
-    gametable = db.query(models.Gameroom).filter(models.Gameroom.id == id)
+    gametable = db.query(models.Gameroom).filter(models.Gameroom.id == id, models.Gameroom.player1 != current_user.id)
     if not gametable.first():
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail=f"No Game Room with id: {id} was found")
     
